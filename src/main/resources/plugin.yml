@@ -1,0 +1,8 @@
+name: Connection_Service
+version: '${project.version}'
+main: me.towercraft.connection.ConnectionService
+api-version: 1.15
+prefix: TCS
+
+commands:
+  connect:
