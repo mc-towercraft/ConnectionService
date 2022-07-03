@@ -1,7 +1,7 @@
 # ConnectionApi
 
 ## Maven
-```
+```typescript jsx
 
 <repository>
     <id>jitpack.io</id>
@@ -19,9 +19,11 @@
 
 ## Example Api
 
-```
+```java
+//Get info for all servers to List
 List<ServerModel> infoServers =  InfoServersApi.getInstance().getServers();
 
+//Connect player to other server
 ServerConnectApi.getInstance().connectByServer(Player, nameServerOrGroup, [TypeConnect(MIN, MAX, RANDOM)])
 ```
 
