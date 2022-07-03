@@ -1,7 +1,7 @@
 # ConnectionApi
 
 ## Maven
-```typescript jsx
+```xml
 
 <repository>
     <id>jitpack.io</id>
