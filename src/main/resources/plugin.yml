@@ -1,6 +1,6 @@
-name: Connection_Service
+name: ConnectionApi
 version: '${project.version}'
-main: me.towercraft.connection.ConnectionService
+main: me.towercraft.connection.ConnectionApi
 api-version: 1.15
 prefix: TCS
 
