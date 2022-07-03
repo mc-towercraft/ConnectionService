@@ -12,6 +12,7 @@
     <groupId>com.github.mc-towercraft</groupId>
     <artifactId>ConnectionService</artifactId>
     <version>connection-api</version>
+    <scope>provided</scope>
 </dependency>
 
 
