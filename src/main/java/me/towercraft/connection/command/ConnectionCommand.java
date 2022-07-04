@@ -11,13 +11,12 @@ import org.jetbrains.annotations.NotNull;
 public class ConnectionCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player && label.split("_")[0].equalsIgnoreCase("connect"))
-            if (args.length > 1) {
+        if (sender instanceof Player && command.getName().equalsIgnoreCase("connect"))
+            if (args.length >= 1) {
                 TypeConnect typeConnect = null;
                 try {
                     typeConnect = TypeConnect.valueOf(args[1]);
                 } catch (Exception e) {
-
                 }
 
                 if (typeConnect != null)

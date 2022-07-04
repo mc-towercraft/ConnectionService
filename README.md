@@ -18,6 +18,30 @@
 
 ```
 
+## Code check plugin
+```java
+
+ Plugin serverConnectionApi = Bukkit.getPluginManager().getPlugin("ConnectionApi");
+        if (serverConnectionApi != null) {
+            PluginManager pm = Bukkit.getPluginManager();
+            getLogger().info("ConnectionApi start detected");
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (pm.isPluginEnabled(serverConnectionApi)) {
+                       //Buisnes logic
+                    }
+                }
+            }).start();
+        } else
+            throw new RuntimeException("Could not find ConnectionApi Plugin!! Plugin can not work without it!");
+
+```
+
 ## Example Api
 
 ```java
