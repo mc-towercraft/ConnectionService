@@ -1,6 +1,7 @@
 package me.towercraft.connection;
 
 import me.towercraft.connection.command.ConnectionCommand;
+import me.towercraft.connection.server.InfoServersApi;
 import me.towercraft.connection.server.ServerConnectApi;
 import me.towercraft.connection.utils.FileManager;
 import org.bukkit.Bukkit;
@@ -13,15 +14,17 @@ public final class ConnectionApi extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        // Plugin startup logic
         //TODO Проверка на наличие клауднета
 
         plugin = this;
         fileManager = new FileManager(this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         plugin.getCommand("connect").setExecutor(new ConnectionCommand());
+
+        //Start Api
         ServerConnectApi.getInstance();
-        // Plugin startup logic
+        InfoServersApi.getInstance();
     }
 
     @Override

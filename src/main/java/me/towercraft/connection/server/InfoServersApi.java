@@ -4,11 +4,10 @@ import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.driver.service.ServiceInfoSnapshot;
 import de.dytanic.cloudnet.ext.bridge.BridgeServiceProperty;
 import me.towercraft.connection.api.InfoServers;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 
 import static me.towercraft.connection.ConnectionApi.plugin;
 
@@ -24,16 +23,18 @@ public class InfoServersApi implements InfoServers {
     }
 
     private final List<ServerModel> servers = new ArrayList<>();
-    private Thread workThread;
+    private final long period;
 
     public InfoServersApi() {
+        period = plugin.getConfig().getLong("General.updateInterval", 5) * 20L;
         init();
     }
 
     public void init() {
-        plugin.getLogger().log(new LogRecord(Level.INFO, "Start get servers"));
-        workThread = new Thread(() -> {
-            while (true) {
+        plugin.getLogger().info("Start get servers");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
                 synchronized (servers) {
                     servers.clear();
                     for (ServiceInfoSnapshot cloudService : CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices()) {
@@ -61,14 +62,8 @@ public class InfoServersApi implements InfoServers {
                         servers.add(modelBuilder.build());
                     }
                 }
-                try {
-                    Thread.sleep(plugin.getConfig().getLong("General.updateInterval", 5) * 1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
             }
-        });
-        workThread.start();
+        }.runTaskTimer(plugin, 0, period);
     }
 
     @Override
@@ -78,7 +73,7 @@ public class InfoServersApi implements InfoServers {
         }
     }
 
-    public int getCountAllOnlineByGroup(String group) {
+    public int getMaxOnlineByGroup(String group) {
         synchronized (servers) {
             return servers
                     .stream()
