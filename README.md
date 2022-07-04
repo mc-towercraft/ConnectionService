@@ -11,7 +11,7 @@
 <dependency>
     <groupId>com.github.mc-towercraft</groupId>
     <artifactId>ConnectionService</artifactId>
-    <version>connection-api</version>
+    <version>{version}</version>
     <scope>provided</scope>
 </dependency>
 
