@@ -1,8 +1,6 @@
 package me.towercraft.connection.server;
 
 import de.dytanic.cloudnet.wrapper.Wrapper;
-import me.towercraft.connection.ConnectionApi;
-import me.towercraft.connection.api.InfoServers;
 import me.towercraft.connection.api.ServerConnect;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static me.towercraft.connection.ConnectionApi.plugin;
 import static me.towercraft.connection.utils.PrintMessageUtil.printMessage;
 
 public class ServerConnectApi implements ServerConnect {
@@ -24,33 +23,26 @@ public class ServerConnectApi implements ServerConnect {
 
     public static ServerConnect getInstance() {
         if (instance == null) {
-            instance = new ServerConnectApi(ConnectionApi.plugin, InfoServersApi.getInstance());
+            instance = new ServerConnectApi();
         }
         return instance;
     }
 
-    public ServerConnectApi(ConnectionApi plugin, InfoServers infoServers) {
-        this.plugin = plugin;
-        this.infoServers = infoServers;
+    private ServerConnectApi() {
         init();
     }
-
-    private final ConnectionApi plugin;
-
-    private final InfoServers infoServers;
 
     private int countRetryReconnect;
 
     private void init() {
         countRetryReconnect = plugin.getConfig().getInt("General.countRetryConnect", 10);
-        countRetryReconnect = 10;
     }
 
     private void connect(Player player, String pieceTypeServer, TypeConnect typeConnect, int nowReconnect) {
         if (!player.isOnline())
             return;
 
-        List<ServerModel> servers = new ArrayList<>(infoServers.getServers());
+        List<ServerModel> servers = new ArrayList<>(InfoServersApi.getInstance().getServers());
 
         servers = servers
                 .stream()

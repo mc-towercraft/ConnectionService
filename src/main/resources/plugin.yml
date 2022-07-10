@@ -5,4 +5,4 @@ api-version: 1.15
 prefix: TCS
 
 commands:
-  connect:
+  connect: {"Try connect to server argument"}

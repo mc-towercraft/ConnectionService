@@ -25,12 +25,12 @@ public class InfoServersApi implements InfoServers {
     private final List<ServerModel> servers = new ArrayList<>();
     private final long period;
 
-    public InfoServersApi() {
+    private InfoServersApi() {
         period = plugin.getConfig().getLong("General.updateInterval", 5) * 20L;
         init();
     }
 
-    public void init() {
+    private void init() {
         plugin.getLogger().info("Start get servers");
         new BukkitRunnable() {
             @Override

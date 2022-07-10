@@ -19,12 +19,13 @@ public final class ConnectionApi extends JavaPlugin {
 
         plugin = this;
         fileManager = new FileManager(this);
-        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        plugin.getCommand("connect").setExecutor(new ConnectionCommand());
 
         //Start Api
-        ServerConnectApi.getInstance();
         InfoServersApi.getInstance();
+        ServerConnectApi.getInstance();
+
+        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+        plugin.getCommand("connect").setExecutor(new ConnectionCommand());
     }
 
     @Override
