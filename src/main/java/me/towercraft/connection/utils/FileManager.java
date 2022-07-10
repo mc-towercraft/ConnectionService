@@ -17,6 +17,7 @@ public class FileManager {
 
     public FileManager(ConnectionApi plugin) {
         this.plugin = plugin;
+        createMessages();
     }
 
     public void createMessages() {
