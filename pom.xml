@@ -6,7 +6,7 @@
 
     <groupId>me.towercraft</groupId>
     <artifactId>connection-service</artifactId>
-    <version>1.0</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>ConnectionApi</name>

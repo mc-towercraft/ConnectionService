@@ -47,7 +47,7 @@ public class FileManager {
     }
 
     public String getMSG(String key) {
-        return message.getString(key, "Not found String [" + key + "] in Message.yml");
+        return message.getString(key, "Not found String [" + key + "] in Messages.yml");
     }
 
 }

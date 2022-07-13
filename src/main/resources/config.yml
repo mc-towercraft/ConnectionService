@@ -1,3 +1,4 @@
 General:
   updateInterval: 3 #in sec
   countRetryConnect: 10 #Count try to connect to server
+  startTimeServer: 30 #In sec
