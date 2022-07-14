@@ -8,10 +8,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static me.towercraft.connection.ConnectionApi.plugin;
@@ -33,9 +31,11 @@ public class ServerConnectApi implements ServerConnect {
     }
 
     private int countRetryReconnect;
+    private Map<String, String> mapConnections;
 
     private void init() {
         countRetryReconnect = plugin.getConfig().getInt("General.countRetryConnect", 10);
+        mapConnections = new ConcurrentHashMap<>();
     }
 
     private void connect(Player player, String pieceTypeServer, TypeConnect typeConnect, int nowReconnect) {
@@ -57,13 +57,21 @@ public class ServerConnectApi implements ServerConnect {
             );
 
             final int finalNowReconnect = nowReconnect;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (finalNowReconnect < countRetryReconnect)
-                        connect(player, pieceTypeServer, typeConnect, finalNowReconnect + 1);
-                }
-            }.runTaskLater(plugin, 200L);
+            if (mapConnections.get(player.getName()) == null) {
+                mapConnections.put(player.getName(), pieceTypeServer);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (finalNowReconnect < countRetryReconnect)
+                            connect(player, pieceTypeServer, typeConnect, finalNowReconnect + 1);
+                        else
+                            mapConnections.remove(player.getName());
+                    }
+                }.runTaskLater(plugin, 200L);
+            } else {
+                printMessage(player, plugin.getFileManager().getMSG("Connect.alreadyTryReconnect") + mapConnections.get(player.getName()));
+            }
+            return;
         }
 
         switch (typeConnect) {
@@ -83,7 +91,7 @@ public class ServerConnectApi implements ServerConnect {
                 return;
             }
 
-            if (servers.get(0).getStatus() != TypeStatusServer.ONLINE){
+            if (servers.get(0).getStatus() != TypeStatusServer.ONLINE) {
                 printMessage(player, plugin.getFileManager().getMSG("Connect.serverNotAvailable") + pieceTypeServer);
                 return;
             }
@@ -99,6 +107,7 @@ public class ServerConnectApi implements ServerConnect {
 
             player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
         }
+        mapConnections.remove(player.getName());
     }
 
     @Override

@@ -1,4 +1,5 @@
 Connect:
   tryReconnect: 'Сервер не найден - попытка подключения %now%/%all%'
+  alreadyTryReconnect: 'Вы уже пытаетесь подключится к - '
   areYouHere: 'Вы уже на этом сервере - &a'
   serverNotAvailable: 'Этот сервер еще не доступен - &a'
