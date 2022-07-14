@@ -10,8 +10,8 @@
 
 <dependency>
     <groupId>com.github.mc-towercraft</groupId>
-    <artifactId>ConnectionService</artifactId>
-    <version>{version}</version>
+    <artifactId>connection-api</artifactId>
+    <version>${version}</version>
     <scope>provided</scope>
 </dependency>
 

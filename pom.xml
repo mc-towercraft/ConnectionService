@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.towercraft</groupId>
-    <artifactId>connection-service</artifactId>
-    <version>1.0.5</version>
+    <artifactId>connection-api</artifactId>
+    <version>1.0.7</version>
     <packaging>jar</packaging>
 
     <name>ConnectionApi</name>
