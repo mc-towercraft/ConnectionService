@@ -54,7 +54,7 @@ public class InfoServersApi implements InfoServers {
                         modelBuilder.mapName(cloudService.getProperty(BridgeServiceProperty.MOTD).orElse("NameMap"));
 
                         if (serversMap.get(cloudService.getName()) == null) {
-                            serversMap.put(cloudService.getName(), System.currentTimeMillis() + 30_000);
+                            serversMap.put(cloudService.getName(), System.currentTimeMillis() + startTimeServer);
                         }
 
                         TypeStatusServer status = TypeStatusServer.OFFLINE;

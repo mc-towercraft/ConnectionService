@@ -46,7 +46,6 @@ public class ServerConnectApi implements ServerConnect {
 
         servers = servers
                 .stream()
-                .filter(s -> s.getStatus() == TypeStatusServer.ONLINE)
                 .filter(s -> s.getName().contains(pieceTypeServer))
                 .sorted(Comparator.comparing(ServerModel::getNowPlayer))
                 .collect(Collectors.toList());
@@ -81,6 +80,11 @@ public class ServerConnectApi implements ServerConnect {
 
             if (Wrapper.getInstance().getCurrentServiceInfoSnapshot().getName().equalsIgnoreCase(servers.get(0).getName())) {
                 printMessage(player, plugin.getFileManager().getMSG("Connect.areYouHere") + pieceTypeServer);
+                return;
+            }
+
+            if (servers.get(0).getStatus() != TypeStatusServer.ONLINE){
+                printMessage(player, plugin.getFileManager().getMSG("Connect.serverNotAvailable") + pieceTypeServer);
                 return;
             }
 
