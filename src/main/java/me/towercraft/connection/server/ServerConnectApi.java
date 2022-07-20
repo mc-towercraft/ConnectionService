@@ -72,6 +72,10 @@ public class ServerConnectApi implements ServerConnect {
                 };
                 bukkitRunnable.runTaskLater(plugin, 100L);
                 mapConnectionsRunnable.put(player.getName(), bukkitRunnable);
+            } else if (mapConnections.get(player.getName()) != null &&
+                    mapConnectionsRunnable.get(player.getName()) != null &&
+                    nowReconnect > 0) {
+                mapConnectionsRunnable.get(player.getName()).runTaskLater(plugin, 100L);
             } else {
                 printMessage(player, plugin.getFileManager().getMSG("Connect.alreadyTryReconnect") + mapConnections.get(player.getName()));
             }
@@ -82,7 +86,7 @@ public class ServerConnectApi implements ServerConnect {
         BukkitRunnable bukkitRunnable = mapConnectionsRunnable.get(player.getName());
         if (bukkitRunnable != null)
             bukkitRunnable.cancel();
-        mapConnectionsRunnable.remove(player.getName()).cancel();
+        mapConnectionsRunnable.remove(player.getName());
 
         switch (typeConnect) {
             case RANDOM:
