@@ -44,6 +44,7 @@ public class InfoServersApi implements InfoServers {
             public void run() {
                 synchronized (servers) {
                     servers.clear();
+
                     for (ServiceInfoSnapshot cloudService : CloudNetDriver.getInstance().getCloudServiceProvider().getCloudServices()) {
                         ServerModel.ServerModelBuilder modelBuilder = new ServerModel.ServerModelBuilder();
                         modelBuilder.group(cloudService.getName().split("-")[0]);

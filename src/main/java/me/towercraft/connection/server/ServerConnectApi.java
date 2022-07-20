@@ -32,10 +32,12 @@ public class ServerConnectApi implements ServerConnect {
 
     private int countRetryReconnect;
     private Map<String, String> mapConnections;
+    private Map<String, BukkitRunnable> mapConnectionsRunnable;
 
     private void init() {
         countRetryReconnect = plugin.getConfig().getInt("General.countRetryConnect", 10);
         mapConnections = new ConcurrentHashMap<>();
+        mapConnectionsRunnable = new ConcurrentHashMap<>();
     }
 
     private void connect(Player player, String pieceTypeServer, TypeConnect typeConnect, int nowReconnect) {
@@ -57,9 +59,9 @@ public class ServerConnectApi implements ServerConnect {
             );
 
             final int finalNowReconnect = nowReconnect;
-            if (mapConnections.get(player.getName()) == null) {
+            if (mapConnections.get(player.getName()) == null && nowReconnect == 0) {
                 mapConnections.put(player.getName(), pieceTypeServer);
-                new BukkitRunnable() {
+                BukkitRunnable bukkitRunnable = new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (finalNowReconnect < countRetryReconnect)
@@ -67,12 +69,20 @@ public class ServerConnectApi implements ServerConnect {
                         else
                             mapConnections.remove(player.getName());
                     }
-                }.runTaskLater(plugin, 200L);
+                };
+                bukkitRunnable.runTaskLater(plugin, 100L);
+                mapConnectionsRunnable.put(player.getName(), bukkitRunnable);
             } else {
                 printMessage(player, plugin.getFileManager().getMSG("Connect.alreadyTryReconnect") + mapConnections.get(player.getName()));
             }
             return;
         }
+
+        mapConnections.remove(player.getName());
+        BukkitRunnable bukkitRunnable = mapConnectionsRunnable.get(player.getName());
+        if (bukkitRunnable != null)
+            bukkitRunnable.cancel();
+        mapConnectionsRunnable.remove(player.getName()).cancel();
 
         switch (typeConnect) {
             case RANDOM:
@@ -107,7 +117,6 @@ public class ServerConnectApi implements ServerConnect {
 
             player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
         }
-        mapConnections.remove(player.getName());
     }
 
     @Override
